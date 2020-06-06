@@ -4,6 +4,11 @@
   width: 650px;
 }
 
+.images {
+    height: 400px;
+    width: auto;
+}
+
 #greeting-container {
   margin-top: 20px;
 }
