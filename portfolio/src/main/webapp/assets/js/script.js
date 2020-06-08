@@ -12,23 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**Generates a URL for a random image in the images directory and adds an img
- * element with that URL to the page. */
+// Returns a random item from the array
+function randomPicker(items) {
+    return items[Math.floor(Math.random() * items.length)];
+}
+
 function randomizeImage() {
-  // The images directory contains 11 images, so generate a random index between 1 - 11
+  // The images directory contains 11 images, so generate a random index between 0 - 10
     const mountains = ['cerro_negro', 'chichimeco', 'iztaccihuatl', 'malinche', 'nevado_de_colima', 'nevado_de_toluca', 
-  'pico_de_orizaba', 'popocatepetl', 'teyotl', 'volcan_chichon', 'volcan_tacana'];
-    const imageIndex = Math.floor(Math.random() * mountains.length);
-    const imgUrl = 'assets/images/mountains/' + mountains[imageIndex] + '.jpg';
+        'pico_de_orizaba', 'popocatepetl', 'teyotl', 'volcan_chichon', 'volcan_tacana'];
 
-  const imgElement = document.createElement('img');
-  imgElement.src = imgUrl;
-  imgElement.className = "images";
+    const imgUrl = 'assets/images/mountains/' + randomPicker(mountains) + '.jpg';
+    const imgElement = document.createElement('img');
+    imgElement.src = imgUrl;
+    imgElement.className = "images";
 
-  const imageContainer = document.getElementById('random-image-container');
-  // Remove the previous image.
-  imageContainer.innerHTML = '';
-  imageContainer.appendChild(imgElement);
+    const imageContainer = document.getElementById('random-image-container');
+    // Remove the previous image.
+    imageContainer.innerHTML = '';
+    imageContainer.appendChild(imgElement);
 }
 
 // Adds a random greeting to the page.
@@ -37,7 +39,7 @@ function addRandomGreeting() {
       ['Welcome', 'Bienvenido', '欢迎', 'Bienvenue', 'Willkommen', 'Benvenuto', 'Bem-vinda', 'желанный'];
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const greeting = randomPicker(greetings);
 
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
