@@ -1,6 +1,7 @@
 # Google Software Product Sprint
+WELCOME!
 
-This repo contains the projects you'll work on throughout SPS.
+This repo contains Alex Guti's portfolio and SPS projects.
 
 To get started:
 
