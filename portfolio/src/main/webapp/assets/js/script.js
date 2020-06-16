@@ -18,7 +18,7 @@ function randomPicker(items) {
 }
 
 function randomizeImage() {
-  // The images directory contains 11 images, so generate a random index between 0 - 10
+    // The images directory contains 11 images, so generate a random index between 0 - 10
     const mountains = ['cerro_negro', 'chichimeco', 'iztaccihuatl', 'malinche', 'nevado_de_colima', 'nevado_de_toluca', 
         'pico_de_orizaba', 'popocatepetl', 'teyotl', 'volcan_chichon', 'volcan_tacana'];
 
@@ -35,16 +35,23 @@ function randomizeImage() {
 
 // Adds a random greeting to the page.
 function addRandomGreeting() {
-  const greetings =
-      ['Welcome', 'Bienvenido', '欢迎', 'Bienvenue', 'Willkommen', 'Benvenuto', 'Bem-vinda', 'желанный'];
+    const greetings = ['Welcome', 'Bienvenido', '欢迎', 'Bienvenue', 'Willkommen', 'Benvenuto', 'Bem-vinda', 'желанный'];
 
-  // Pick a random greeting.
-  const greeting = randomPicker(greetings);
+    // Pick a random greeting.
+    const greeting = randomPicker(greetings);
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+    // Add it to the page.
+    const greetingContainer = document.getElementById('greeting-container');
+    greetingContainer.innerText = greeting;
+}
+
+// Adds a random name to the page.
+function getRandomNameUsingArrowFunctions() {
+  fetch('data').then(response => response.text()).then((name) => {
+    document.getElementById('name-container').innerText = name;
+  });
 }
 
 setInterval(randomizeImage, 4000);
 setInterval(addRandomGreeting, 4000);
+setInterval(getRandomNameUsingArrowFunctions, 4000);
