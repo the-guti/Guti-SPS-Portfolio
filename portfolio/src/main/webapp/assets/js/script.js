@@ -12,9 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Returns a random item from the array
-function randomPicker(items) {
-    return items[Math.floor(Math.random() * items.length)];
+// Adds a random greeting to the page.
+function addRandomGreeting() {
+    const greetings = ['Welcome', 'Bienvenido', '欢迎', 'Bienvenue', 'Willkommen', 'Benvenuto', 'Bem-vinda', 'желанный'];
+
+    // Pick a random greeting.
+    const greeting = randomPicker(greetings);
+
+    // Add it to the page.
+    const greetingContainer = document.getElementById('greeting-container');
+    greetingContainer.innerText = greeting;
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+// Adds a random name to the page.
+function getRandomNameUsingArrowFunctions() {
+    fetch('/data')
+    .then(response => response.text())
+    .then((name) => {
+        document.getElementById('name-container').innerText = name;
+    });
 }
 
 function randomizeImage() {
@@ -33,25 +56,25 @@ function randomizeImage() {
     imageContainer.appendChild(imgElement);
 }
 
-// Adds a random greeting to the page.
-function addRandomGreeting() {
-    const greetings = ['Welcome', 'Bienvenido', '欢迎', 'Bienvenue', 'Willkommen', 'Benvenuto', 'Bem-vinda', 'желанный'];
-
-    // Pick a random greeting.
-    const greeting = randomPicker(greetings);
-
-    // Add it to the page.
-    const greetingContainer = document.getElementById('greeting-container');
-    greetingContainer.innerText = greeting;
+// Returns a random item from the array
+function randomPicker(items) {
+    return items[Math.floor(Math.random() * items.length)];
 }
 
-// Adds a random name to the page.
-function getRandomNameUsingArrowFunctions() {
-  fetch('data').then(response => response.text()).then((name) => {
-    document.getElementById('name-container').innerText = name;
-  });
+// 
+function receiveJson() {
+    fetch('/json')
+        .then(response => response.text()) 
+        .then((json) => {
+            const commentContainer = document.getElementById('comment');
+            var commentsObj = JSON.parse(json);
+            console.log(commentsObj);
+            commentContainer.innerHTML = commentsObj;
+        console.log(json);
+    });
 }
 
+receiveJson();
 setInterval(randomizeImage, 4000);
 setInterval(addRandomGreeting, 4000);
 setInterval(getRandomNameUsingArrowFunctions, 4000);

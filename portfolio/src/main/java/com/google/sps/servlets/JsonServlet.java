@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,27 +23,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
-    private List<String> myNames;
+@WebServlet("/json")
+public class JsonServlet extends HttpServlet {
+    private ArrayList<String> messages;
+    private Gson gson = new Gson();
 
     @Override
     public void init() {
-        myNames = new ArrayList<>();
-        myNames.add("Guti");
-        myNames.add("Alex");
-        myNames.add("Alex Gutz");
-        myNames.add("Robert");
-        myNames.add("Alex Guti");
+        messages = new ArrayList<>();
+        messages.add("{\"message\": \"mess 1\",\"name\": \"Juan\"}");
+        messages.add("{\"message\": \"mess 2\",\"name\": \"not juan\"}");
+        messages.add("{\"message\": \"mess 3\",\"name\": \"maybe sJuan\"}");
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String nameIntro =  "My name is " 
-            + myNames.get((int) (Math.random() * myNames.size()))
-            + ", welcome to my crib!";
 
-        response.setContentType("text/html;");
-        response.getWriter().println(nameIntro);
+        response.setContentType("application/json;");
+        response.getWriter().println(messages);
     }
 }   
