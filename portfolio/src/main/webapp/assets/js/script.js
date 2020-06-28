@@ -24,13 +24,6 @@ function addRandomGreeting() {
     greetingContainer.innerText = greeting;
 }
 
-/** Creates an <li> element containing text. */
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
-}
-
 // Adds a random name to the page.
 function getRandomNameUsingArrowFunctions() {
     fetch('/data')
@@ -68,9 +61,9 @@ function receiveJson() {
         .then((json) => {
             const commentContainer = document.getElementById('comment');
             var commentsObj = JSON.parse(json);
-            console.log(commentsObj);
+            console.log("comments", commentsObj);
             commentContainer.innerHTML = commentsObj;
-        console.log(json);
+        console.log("json ", json);
     });
 }
 

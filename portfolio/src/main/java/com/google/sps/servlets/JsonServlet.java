@@ -30,16 +30,36 @@ public class JsonServlet extends HttpServlet {
 
     @Override
     public void init() {
-        messages = new ArrayList<>();
+        messages = new ArrayList<>()
+        /*
         messages.add("{\"message\": \"mess 1\",\"name\": \"Juan\"}");
         messages.add("{\"message\": \"mess 2\",\"name\": \"not juan\"}");
         messages.add("{\"message\": \"mess 3\",\"name\": \"maybe sJuan\"}");
+        */
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        String json = gson.toJson(messages);
         response.setContentType("application/json;");
-        response.getWriter().println(messages);
+        response.getWriter().println(json);
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Get the input from the form.
+        String commentText = request.getParameter("comment-text-input");
+        String commentName = request.getParameter("comment-name-input");
+
+        // If there is a comment
+        if(commentText != null){
+            // Respond with the result. 
+            String json = gson.toJson(commentName, commentText);
+            //System.out.println("\n json java serverlket",json);
+            messages.add(json);
+            // response.setContentType("text/html;");
+            // response.getWriter().println(commentText);
+        }
+        response.sendRedirect("/index.html");
     }
 }   
