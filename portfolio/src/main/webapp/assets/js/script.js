@@ -33,6 +33,7 @@ function getRandomNameUsingArrowFunctions() {
     });
 }
 
+// Chose a random image from array and place it in html
 function randomizeImage() {
     // The images directory contains 11 images, so generate a random index between 0 - 10
     const mountains = ['cerro_negro', 'chichimeco', 'iztaccihuatl', 'malinche', 'nevado_de_colima', 'nevado_de_toluca', 
@@ -54,16 +55,14 @@ function randomPicker(items) {
     return items[Math.floor(Math.random() * items.length)];
 }
 
-// 
+// Get the comments and add them to html
 function receiveJson() {
-    fetch('/json')
+    fetch('/comments')
         .then(response => response.text()) 
         .then((json) => {
             const commentContainer = document.getElementById('comment');
             var commentsObj = JSON.parse(json);
-            console.log("comments", commentsObj);
             commentContainer.innerHTML = commentsObj;
-        console.log("json ", json);
     });
 }
 

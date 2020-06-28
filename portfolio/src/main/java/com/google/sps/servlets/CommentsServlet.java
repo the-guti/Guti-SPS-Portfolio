@@ -13,7 +13,14 @@
 // limitations under the License.
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,23 +30,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/json")
-public class JsonServlet extends HttpServlet {
+@WebServlet("/comments")
+public class CommentsServlet extends HttpServlet {
+    private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     private ArrayList<String> messages;
     private Gson gson = new Gson();
 
     @Override
     public void init() {
-        messages = new ArrayList<>()
-        /*
-        messages.add("{\"message\": \"mess 1\",\"name\": \"Juan\"}");
-        messages.add("{\"message\": \"mess 2\",\"name\": \"not juan\"}");
-        messages.add("{\"message\": \"mess 3\",\"name\": \"maybe sJuan\"}");
-        */
+        messages = new ArrayList<>();
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+        PreparedQuery resultsComments = datastore.prepare(query);
+
+        // Iterate through array and get the text from object comment
+        for (Entity entity : resultsComments.asIterable()) {
+            messages.add((String) entity.getProperty("comment"));
+        }
+
         String json = gson.toJson(messages);
         response.setContentType("application/json;");
         response.getWriter().println(json);
@@ -50,15 +61,20 @@ public class JsonServlet extends HttpServlet {
         // Get the input from the form.
         String commentText = request.getParameter("comment-text-input");
         String commentName = request.getParameter("comment-name-input");
+        long commentTimestamp = System.currentTimeMillis();
 
         // If there is a comment
         if(commentText != null){
-            // Respond with the result. 
-            String json = gson.toJson(commentName, commentText);
-            //System.out.println("\n json java serverlket",json);
-            messages.add(json);
-            // response.setContentType("text/html;");
-            // response.getWriter().println(commentText);
+            // Create comment entity
+            Entity commentEntity = new Entity("Comment");
+
+            //Set properties
+            commentEntity.setProperty("comment", commentText);
+            commentEntity.setProperty("name", commentName);
+            commentEntity.setProperty("timestamp", commentTimestamp);
+            
+            // Store comment entity in datastore
+            datastore.put(commentEntity);
         }
         response.sendRedirect("/index.html");
     }
