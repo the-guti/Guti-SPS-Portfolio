@@ -29,16 +29,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+// Servlet to handle get and post request for comments
 @WebServlet("/comments")
 public class CommentsServlet extends HttpServlet {
     private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    private ArrayList<String> messages;
+    private List<Comment> comments;
     private Gson gson = new Gson();
 
     @Override
     public void init() {
-        messages = new ArrayList<>();
+        comments = new ArrayList<>();
     }
 
     @Override
@@ -48,10 +48,16 @@ public class CommentsServlet extends HttpServlet {
 
         // Iterate through array and get the text from object comment
         for (Entity entity : resultsComments.asIterable()) {
-            messages.add((String) entity.getProperty("comment"));
+            long id = entity.getKey().getId();
+            String name = (String) entity.getProperty("name");
+            String comment = (String) entity.getProperty("comment");
+            long timestamp = (long) entity.getProperty("timestamp");
+
+            Comment commentEntity = new Comment(id, name, comment, timestamp);
+            comments.add(commentEntity);
         }
 
-        String json = gson.toJson(messages);
+        String json = gson.toJson(comments);
         response.setContentType("application/json;");
         response.getWriter().println(json);
     }
